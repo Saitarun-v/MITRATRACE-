@@ -1,0 +1,125 @@
+{
+  "name": "Evidence",
+  "type": "object",
+  "properties": {
+    "evidence_id": {
+      "type": "string",
+      "description": "Human-readable evidence record identifier, e.g. EV-20261121-8F3A"
+    },
+    "case_id": {
+      "type": "string",
+      "description": "Case this record was generated for"
+    },
+    "case_title": {
+      "type": "string",
+      "description": "Case title captured at generation time"
+    },
+    "report_title": {
+      "type": "string",
+      "description": "Report title"
+    },
+    "summary": {
+      "type": "string",
+      "description": "Transaction evidence summary included in the report"
+    },
+    "wallets": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Wallet addresses covered by the report"
+    },
+    "transaction_hashes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Transaction hashes cited as evidence"
+    },
+    "alert_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Pattern alert identifiers referenced by the report"
+    },
+    "record_payload": {
+      "type": "string",
+      "description": "Canonical serialised report content that was hashed"
+    },
+    "sha256": {
+      "type": "string",
+      "description": "SHA-256 digest of record_payload, computed at generation time"
+    },
+    "generated_at": {
+      "type": "string",
+      "description": "ISO timestamp of report generation"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "unverified",
+        "verified",
+        "mismatch"
+      ],
+      "enumColors": [
+        "gray",
+        "green",
+        "red"
+      ],
+      "default": "unverified",
+      "description": "Result of the last integrity check"
+    },
+    "verified_at": {
+      "type": "string",
+      "description": "ISO timestamp of the last integrity check"
+    }
+  },
+  "required": [
+    "evidence_id",
+    "report_title",
+    "sha256",
+    "record_payload"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "name": "Case",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Short case title, e.g. 'Consolidation cluster review'"
+    },
+    "description": {
+      "type": "string",
+      "description": "What the investigator is looking into"
+    },
+    "reference": {
+      "type": "string",
+      "description": "Internal reference code shown in the case list"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "open",
+        "active",
+        "closed"
+      ],
+      "enumColors": [
+        "blue",
+        "green",
+        "gray"
+      ],
+      "default": "open",
+      "description": "Investigation state"
+    },
+    "priority": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ],
+      "enumColors": [
+        "green",
+        "yellow",
+        "red",
+        "red"
+      ],
+      "default": "medium",
+      "description": "Triage priority"
+    },
+    "wallets": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Wallet addresses attached to this case"
+    },
+    "networks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Blockchain networks referenced by the attached wallets"
+    },
+    "findings": {
+      "type": "string",
+      "description": "Investigator notes and findings saved against the case"
+    }
+  },
+  "required": [
+    "title"
+  ],
+  "rls": {
+    "read": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "create": {
+      "created_by_id": "{{user.id}}"
+    },
+    "update": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "created_by_id": "{{user.id}}"
+        },
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        }
+      ]
+    }
+  }
+}
